@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 const navigationItems = [
-  { title: "EFTA GALLERY", route: "/gallery" },
-  { title: "EFTA GPT", route: "/gpt" },
-  { title: "EFTA MUSIC", route: "/" },
-  { title: "EFTA AI", route: "/ai" }
+  { title: "DISCOVER", route: "/" },
+  { title: "GALLERY", route: "/gallery" },
+  { title: "MY WAVE", route: "/my-wave" },
+  { title: "FRIENDS", route: "/friends" },
+  { title: "PROFILE", route: "/profile" },
 ];
 
 const TopNavigation = () => {
@@ -42,7 +43,7 @@ const TopNavigation = () => {
           {/* Logo */}
           <div className="flex items-center">
             <h1 className="text-xl font-bold text-gothic-highlight tracking-wider">
-              EFTANASYA <span className="text-muted-foreground">TOOLS</span>
+              EFTANASYA <span className="text-muted-foreground">MUSIC</span>
             </h1>
           </div>
 

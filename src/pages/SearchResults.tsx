@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { usePlayer } from "@/contexts/PlayerContext";
+import { runtimeConfig } from "@/config/runtime";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface YouTubeVideo {
@@ -38,8 +39,7 @@ const SearchResults = () => {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  // YouTube API key
-  const YOUTUBE_API_KEY = "AIzaSyB_t3uhf9i8Mdx7lFPTPmkV7sesONyu9y4";
+  const YOUTUBE_API_KEY = runtimeConfig.youtubeApiKey;
 
   const searchYouTube = async (searchQuery: string) => {
     if (!searchQuery.trim()) {

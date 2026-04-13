@@ -1,73 +1,97 @@
-# Welcome to your Lovable project
+# Eftanasya
 
-## Project info
+Eftanasya is a dark-themed music discovery and social listening web app. This repository contains the current frontend MVP: landing experience, auth, profile management, library and playlists, listening history, recommendations, friends/chat, and a shared player shell backed by Supabase.
 
-**URL**: https://lovable.dev/projects/97873d93-3988-4b21-8064-dbc5758ee478
+Start here:
+- [AGENTS.md](./AGENTS.md)
+- [docs/architecture.md](./docs/architecture.md)
+- [docs/roadmap.md](./docs/roadmap.md)
 
-## How can I edit this code?
+## Current status
 
-There are several ways of editing your application.
+- Build: passes with `npm run build`
+- Typecheck: passes with `npm run typecheck`
+- Lint: currently fails because of inherited React hook and TypeScript debt
+- Product maturity: UI-heavy MVP with real Supabase data flows and partial demo logic in the music layer
 
-**Use Lovable**
+## What works today
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/97873d93-3988-4b21-8064-dbc5758ee478) and start prompting.
+- Supabase auth and profile editing
+- User library, downloads, playlists, and listening history
+- Recommendation surfaces in `TrackRecommendations`, `Gallery`, and `MyWave`
+- Friends, chat, and realtime message subscription
+- Global player UI with recent tracks sidebar
+- Legal/support/community pages for a public-facing product shell
 
-Changes made via Lovable will be committed automatically to this repo.
+## What is still partial
 
-**Use your preferred IDE**
+- `src/services/musicService.ts` still simulates search and audio playback for part of the experience
+- `src/pages/SearchResults.tsx` talks to the YouTube client API directly
+- Recommendation logic is heuristic and based on stored user activity, not a dedicated recommendation backend
+- `npm run lint` is red and should not be used as the only quality gate yet
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- React 18
+- Vite 5
+- TypeScript
+- Tailwind CSS + shadcn/ui
+- Supabase Auth, Postgres, Storage, and Realtime
 
-Follow these steps:
+## Quick start
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+git clone https://github.com/Lifleks/eftanasya.git
+cd eftanasya
+npm ci
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Optional local overrides can live in `.env.local`. See [.env.example](./.env.example). The repository currently includes client-safe fallbacks for the active Supabase project and the current YouTube search key so the app can boot without extra setup.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Scripts
 
-**Use GitHub Codespaces**
+- `npm run dev` - local development server
+- `npm run build` - production build
+- `npm run typecheck` - TypeScript verification
+- `npm run lint` - ESLint scan, currently expected to fail until debt is cleaned up
+- `npm run verify` - typecheck plus build
+- `npm run preview` - preview the production bundle
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project map
 
-## What technologies are used for this project?
+- `src/App.tsx` - route registration and global providers
+- `src/pages/*` - route-level screens
+- `src/components/*` - reusable UI and feature widgets
+- `src/contexts/PlayerContext.tsx` - global player state and library hooks
+- `src/hooks/useAuth.tsx` - Supabase auth session provider
+- `src/services/musicService.ts` - current client-side playback and mocked search layer
+- `src/integrations/supabase/*` - generated Supabase client and database types
+- `supabase/migrations/*` - schema history for profiles, playlists, library, downloads, chat, listening history, and preferences
 
-This project is built with:
+## Data model
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The current Supabase project stores:
 
-## How can I deploy this project?
+- `profiles`
+- `playlists`
+- `user_library`
+- `downloaded_tracks`
+- `friendships`
+- `chats`
+- `chat_participants`
+- `messages`
+- `listening_history`
+- `user_preferences`
 
-Simply open [Lovable](https://lovable.dev/projects/97873d93-3988-4b21-8064-dbc5758ee478) and click on Share -> Publish.
+Each table already has RLS policies defined in the migrations directory.
 
-## Can I connect a custom domain to my Lovable project?
+## Deployment notes
 
-Yes, you can!
+Today the repository is easiest to deploy as a static frontend with Supabase as the backend service. Recommended targets:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- Vercel
+- Netlify
+- Lovable publish flow for quick previews
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Before calling it production-ready, plan to finish the tasks in [docs/roadmap.md](./docs/roadmap.md), especially around the music backend, runtime configuration, and lint/code health.
